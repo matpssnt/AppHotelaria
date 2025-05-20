@@ -15,7 +15,7 @@ public class TesteConexaoDB {
                 condb.close();
                 System.out.println("Conexão encerrada!");
 
-            } catch (Exception erro){
+            } catch (Exception erro) {
                 System.out.println("Erro ao encerrar a conexão:" + erro.getMessage());
             }
 

@@ -30,12 +30,11 @@ public class Conexao {
 
 
 
-
-
-        } catch (SQLException erro) {
-            System.err.println("Erro ao conectar com o Banco de Dados!");
+        } catch (SQLException | ClassNotFoundException erro) {
+            System.err.println("Erro ao conectar com o Banco de Dados" + erro);
             erro.printStackTrace();
             return null;
-    }
+        }
 
+    }
 }
