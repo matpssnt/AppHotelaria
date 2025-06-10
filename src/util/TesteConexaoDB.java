@@ -19,11 +19,11 @@ public class TesteConexaoDB {
                 System.out.println("Usuario inserido com sucesso!");
 
                 ClientesDAO clientesDAO = new ClientesDAO();
-                clientesDAO.inserirClientes();
+                clientesDAO.inserirCliente();
                 System.out.println("Cliente inserido com sucesso!");
 
                 RoomsDAO roomsDAO = new RoomsDAO();
-                roomsDAO.inserirQuartos();
+                roomsDAO.inserirQuarto();
                 System.out.println("Quarto inserido com sucesso!");
 
                 AdicionaisDAO adicionaisDAO = new AdicionaisDAO();
@@ -31,7 +31,7 @@ public class TesteConexaoDB {
                 System.out.println("Adicional inserido com sucesso!");
 
                 RolesDAO rolesDAO = new RolesDAO();
-                rolesDAO.inserirCargos();
+                rolesDAO.inserirCargo();
                 System.out.println("Cargo inserido com sucesso!");
 
 
