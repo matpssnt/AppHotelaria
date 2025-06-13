@@ -5,6 +5,7 @@ import util.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class RolesDAO {
     private Conexao conexao = new Conexao();
@@ -30,7 +31,7 @@ public class RolesDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement updateRole = conndb.prepareStatement("UPDATE clientes SET nome = ? WHERE id = ?;");
+            PreparedStatement updateRole = conndb.prepareStatement("UPDATE roles SET nome = ? WHERE id = ?;");
 
             updateRole.setString(1, "");
             updateRole.setInt(2, 1);
@@ -50,7 +51,7 @@ public class RolesDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement delRoles = conndb.prepareStatement("DELETE FROM clientes WHERE id = ?;");
+            PreparedStatement delRoles = conndb.prepareStatement("DELETE FROM roles WHERE id = ?;");
 
             delRoles.setInt(1, 1);
 
@@ -62,6 +63,25 @@ public class RolesDAO {
         catch (Exception erro) {
             System.out.println("Erro ao deletar o cargo: " + erro);
             return false;
+        }
+    }
+
+    public void pesquisarCargo() {
+        try {
+            Connection conndb = conexao.conectar();
+            PreparedStatement buscaRoles = conndb.prepareStatement("SELECT nome FROM roles WHERE id = ?");
+
+            buscaRoles.setInt(1, 1);
+            ResultSet resultado = buscaRoles.executeQuery();
+
+            while (resultado.next()) {
+                String nome = resultado.getString("nome");
+                System.out.println("Nome: " + nome);
+            }
+            conndb.close();
+        }
+        catch (Exception erro) {
+            System.out.println("Erro ao pesquisar o cargo: " + erro);
         }
     }
 }

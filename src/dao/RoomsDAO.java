@@ -5,6 +5,7 @@ import util.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class RoomsDAO {
     private Conexao conexao = new Conexao();
@@ -35,7 +36,7 @@ public class RoomsDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement updateRoom = conndb.prepareStatement("UPDATE clientes SET nome = ?, num = ?, preco = ?, quantidadeCama = ?, tiposCama - ?, disponivel = ? WHERE id = ?;");
+            PreparedStatement updateRoom = conndb.prepareStatement("UPDATE quartos SET nome = ?, num = ?, preco = ?, quantidadeCama = ?, tiposCama - ?, disponivel = ? WHERE id = ?;");
 
             updateRoom.setString(1, "");
             updateRoom.setInt(2, 123);
@@ -59,7 +60,7 @@ public class RoomsDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement delRooms = conndb.prepareStatement("DELETE FROM clientes WHERE id = ?;");
+            PreparedStatement delRooms = conndb.prepareStatement("DELETE FROM quartos WHERE id = ?;");
 
             delRooms.setInt(1, 1);
 
@@ -70,6 +71,30 @@ public class RoomsDAO {
         catch (Exception erro) {
             System.out.println("Erro ao deletar o quarto: " + erro);
             return false;
+        }
+    }
+
+    public void pesquisarQuarto() {
+        try {
+            Connection conndb = conexao.conectar();
+            PreparedStatement buscaRooms = conndb.prepareStatement("SELECT nome, num, preco, quantidadeCama, tiposCama, disponivel FROM quartos WHERE id = ?");
+
+            buscaRooms.setInt(1, 1);
+            ResultSet resultado = buscaRooms.executeQuery();
+
+            while (resultado.next()) {
+                String nome = resultado.getString("nome");
+                int num = resultado.getInt("num");
+                double preco = resultado.getDouble("preco");
+                int quantidadeCama = resultado.getInt("quantidadeCama");
+                String tiposDeCama = resultado.getString("Tipos de Cama");
+                boolean disponivel = resultado.getBoolean("disponivel");
+                System.out.println("Nome: " + nome + " Número: " + num + "Preço: " + preco + "Quantidade de Cama: " + quantidadeCama + "Tipos de cama: " + tiposDeCama + "Disponivel: " + disponivel);
+            }
+            conndb.close();
+        }
+        catch (Exception erro) {
+            System.out.println("Erro ao pesquisar o quarto: " + erro);
         }
     }
 }

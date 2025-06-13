@@ -5,6 +5,7 @@ import util.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class UsuariosDAO {
     private Conexao conexao = new Conexao();
@@ -67,6 +68,26 @@ public class UsuariosDAO {
         catch (Exception erro) {
             System.out.println("Erro ao deletar usuario: " + erro);
             return false;
+        }
+    }
+
+    public void pesquisarUsuario() {
+        try {
+            Connection conndb = conexao.conectar();
+            PreparedStatement buscaUsuario = conndb.prepareStatement("SELECT nome, email FROM usuarios WHERE cargo_id = ?");
+
+            buscaUsuario.setInt(1, 1);
+            ResultSet resultado = buscaUsuario.executeQuery();
+
+            while (resultado.next()) {
+                String nome = resultado.getString("nome");
+                String email = resultado.getString("email");
+                System.out.println("Nome: " + nome + " Email: " + email);
+            }
+            conndb.close();
+        }
+        catch (Exception erro) {
+            System.out.println("Erro ao pesquisar usuario: " + erro);
         }
     }
 }

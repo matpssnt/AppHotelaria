@@ -5,6 +5,7 @@ import util.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class ReservasDAO {
     private Conexao conexao = new Conexao();
@@ -13,15 +14,15 @@ public class ReservasDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement updateReserva = conndb.prepareStatement("UPDATE clientes SET pedido_id = ?, quarto_id = ?, fim = ?, inicio = ? WHERE id = ?;");
+            PreparedStatement updateReservas = conndb.prepareStatement("UPDATE reservas SET pedido_id = ?, quarto_id = ?, fim = ?, inicio = ? WHERE id = ?;");
 
-            updateReserva.setInt(1, 1);
-            updateReserva.setInt(2, 1);
+            updateReservas.setInt(1, 1);
+            updateReservas.setInt(2, 1);
             //updateReserva.setDate(3, );
             //updateReserva.setDate(4, );
-            updateReserva.setInt(5, 1);
+            updateReservas.setInt(5, 1);
 
-            int rowAffected = updateReserva.executeUpdate();
+            int rowAffected = updateReservas.executeUpdate();
             conndb.close();
             return rowAffected > 0;
         }
@@ -31,21 +32,43 @@ public class ReservasDAO {
         }
     }
 
-    public boolean deletarReservas() {
+    public boolean deletarReserva() {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement delReserva = conndb.prepareStatement("DELETE FROM reservas WHERE id = ?;");
+            PreparedStatement delReservas = conndb.prepareStatement("DELETE FROM reservas WHERE id = ?;");
 
-            delReserva.setInt(1, 1);
+            delReservas.setInt(1, 1);
 
-            int rowAffected = delReserva.executeUpdate();
+            int rowAffected = delReservas.executeUpdate();
             conndb.close();
             return rowAffected > 0;
         }
         catch (Exception erro) {
             System.out.println("Erro ao deletar uma reserva: " + erro);
             return false;
+        }
+    }
+
+    public void pesquisarReserva() {
+        try {
+            Connection conndb = conexao.conectar();
+            PreparedStatement buscaReservas = conndb.prepareStatement("SELECT pedido_id, quarto_id, fim , inicio FROM reservas WHERE id = ?");
+
+            buscaReservas.setInt(1, 1);
+            ResultSet resultado = buscaReservas.executeQuery();
+
+            while (resultado.next()) {
+                int pedidoId = resultado.getInt("pedido_id");
+                int quartoId = resultado.getInt("quarto_id");
+                //int fim = resultado.getInt("fim");
+                //int inicio = resultado.getInt("inicio");
+                System.out.println("Id do pedido: " + pedidoId + " Id do quarto: " + quartoId);// + "Fim: " + fim + "Inicio: " + inicio);
+            }
+            conndb.close();
+        }
+        catch (Exception erro) {
+            System.out.println("Erro ao pesquisar usuario: " + erro);
         }
     }
 }

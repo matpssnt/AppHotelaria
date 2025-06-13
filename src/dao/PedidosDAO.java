@@ -4,11 +4,12 @@ import util.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class PedidosDAO {
     private Conexao conexao = new Conexao();
 
-    public boolean inserirPedidos() {
+    public boolean inserirPedido() {
 
         try {
             Connection conndb = conexao.conectar();
@@ -33,7 +34,7 @@ public class PedidosDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement updatePedido = conndb.prepareStatement("UPDATE clientes SET funcionario_id = ?, cliente_id = ?, pagamento = ? WHERE id = ?;");
+            PreparedStatement updatePedido = conndb.prepareStatement("UPDATE pedidos SET funcionario_id = ?, cliente_id = ?, pagamento = ? WHERE id = ?;");
 
             updatePedido.setInt(1, 1);
             updatePedido.setInt(2, 1);
@@ -50,11 +51,11 @@ public class PedidosDAO {
         }
     }
 
-    public boolean deletarPedidos() {
+    public boolean deletarPedido() {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement delPedido = conndb.prepareStatement("DELETE FROM clientes WHERE id = ?;");
+            PreparedStatement delPedido = conndb.prepareStatement("DELETE FROM pedidos WHERE id = ?;");
 
             delPedido.setInt(1, 1);
 
@@ -66,6 +67,27 @@ public class PedidosDAO {
         catch (Exception erro) {
             System.out.println("Erro ao deletar um pedido: " + erro);
             return false;
+        }
+    }
+
+    public void pesquisarPedido() {
+        try {
+            Connection conndb = conexao.conectar();
+            PreparedStatement buscaPedidos = conndb.prepareStatement("SELECT funcionario_id, cliente_id, pagamento FROM pedidos WHERE id = ?");
+
+            buscaPedidos.setInt(1, 1);
+            ResultSet resultado = buscaPedidos.executeQuery();
+
+            while (resultado.next()) {
+                int funcionarioId = resultado.getInt("funcionario_id");
+                int clienteId = resultado.getInt("cliente_id");
+                String pagamento = resultado.getString("pagamento");
+                System.out.println("Id do funcionário: " + funcionarioId + "Id do cliente: " + clienteId + "Pagamento: " + pagamento);
+            }
+            conndb.close();
+        }
+        catch (Exception erro) {
+            System.out.println("Erro ao pesquisar usuario: " + erro);
         }
     }
 }

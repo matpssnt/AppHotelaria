@@ -5,6 +5,7 @@ import util.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class AdicionaisDAO {
     private Conexao conexao = new Conexao();
@@ -31,7 +32,7 @@ public class AdicionaisDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement updateAdici = conndb.prepareStatement("UPDATE clientes SET nome = ?, preco = ? WHERE id = ?;");
+            PreparedStatement updateAdici = conndb.prepareStatement("UPDATE adicionais SET nome = ?, preco = ? WHERE id = ?;");
 
             updateAdici.setString(1, "");
             updateAdici.setDouble(2, 65.00);
@@ -51,7 +52,7 @@ public class AdicionaisDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement delAdici = conndb.prepareStatement("DELETE FROM clientes WHERE id = ?;");
+            PreparedStatement delAdici = conndb.prepareStatement("DELETE FROM adicionais WHERE id = ?;");
 
             delAdici.setInt(1, 1);
 
@@ -63,6 +64,26 @@ public class AdicionaisDAO {
         catch (Exception erro) {
             System.out.println("Erro ao deletar o(s) adicional(is): " + erro);
             return false;
+        }
+    }
+
+    public void pesquisarAdici() {
+        try {
+            Connection conndb = conexao.conectar();
+            PreparedStatement buscaAdici = conndb.prepareStatement("SELECT nome, preco FROM adicionais WHERE id = ?");
+
+            buscaAdici.setInt(1, 1);
+            ResultSet resultado = buscaAdici.executeQuery();
+
+            while (resultado.next()) {
+                String nome = resultado.getString("nome");
+                double preco = resultado.getDouble("preco");
+                System.out.println("Nome: " + nome + " Preço: " + preco);
+            }
+            conndb.close();
+        }
+        catch (Exception erro) {
+            System.out.println("Erro ao pesquisar sobre o adicional: " + erro);
         }
     }
 }
