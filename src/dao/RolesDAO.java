@@ -33,7 +33,7 @@ public class RolesDAO {
             Connection conndb = conexao.conectar();
             PreparedStatement updateRole = conndb.prepareStatement("UPDATE roles SET nome = ? WHERE id = ?;");
 
-            updateRole.setString(1, "");
+            updateRole.setString(1, "Gerencia");
             updateRole.setInt(2, 1);
 
 
@@ -66,7 +66,7 @@ public class RolesDAO {
         }
     }
 
-    public void pesquisarCargo() {
+    public void autenticarCargo() {
         try {
             Connection conndb = conexao.conectar();
             PreparedStatement buscaRoles = conndb.prepareStatement("SELECT nome FROM roles WHERE id = ?");
@@ -76,12 +76,13 @@ public class RolesDAO {
 
             while (resultado.next()) {
                 String nome = resultado.getString("nome");
+                System.out.println("\n-------- Autenticação de Cargos --------\n");
                 System.out.println("Nome: " + nome);
             }
             conndb.close();
         }
         catch (Exception erro) {
-            System.out.println("Erro ao pesquisar o cargo: " + erro);
+            System.out.println("Erro ao autenticar o cargo: " + erro);
         }
     }
 }

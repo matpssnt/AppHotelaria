@@ -36,14 +36,14 @@ public class RoomsDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement updateRoom = conndb.prepareStatement("UPDATE quartos SET nome = ?, num = ?, preco = ?, quantidadeCama = ?, tiposCama - ?, disponivel = ? WHERE id = ?;");
+            PreparedStatement updateRoom = conndb.prepareStatement("UPDATE quartos SET nome = ?, num = ?, preco = ?, quantidadeCama = ?, tiposCama = ?, disponivel = ? WHERE id = ?;");
 
-            updateRoom.setString(1, "");
-            updateRoom.setInt(2, 123);
-            updateRoom.setDouble(3, 250.00);
-            updateRoom.setInt(4, 2);
-            updateRoom.setString(5, "");
-            updateRoom.setBoolean(6, true);
+            updateRoom.setString(1, "Quarto Solteiro");
+            updateRoom.setInt(2, 321);
+            updateRoom.setDouble(3, 150.00);
+            updateRoom.setInt(4, 1);
+            updateRoom.setString(5, "Sim");
+            updateRoom.setBoolean(6, false);
             updateRoom.setInt(7, 1);
 
             int rowAffected = updateRoom.executeUpdate();
@@ -74,27 +74,28 @@ public class RoomsDAO {
         }
     }
 
-    public void pesquisarQuarto() {
+    public void autenticarQuarto() {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement buscaRooms = conndb.prepareStatement("SELECT nome, num, preco, quantidadeCama, tiposCama, disponivel FROM quartos WHERE id = ?");
+            PreparedStatement autenticarRooms = conndb.prepareStatement("SELECT nome, num, preco, quantidadeCama, tiposCama, disponivel FROM quartos WHERE id = ?");
 
-            buscaRooms.setInt(1, 1);
-            ResultSet resultado = buscaRooms.executeQuery();
+            autenticarRooms.setInt(1, 1);
+            ResultSet resultado = autenticarRooms.executeQuery();
 
             while (resultado.next()) {
                 String nome = resultado.getString("nome");
                 int num = resultado.getInt("num");
                 double preco = resultado.getDouble("preco");
                 int quantidadeCama = resultado.getInt("quantidadeCama");
-                String tiposDeCama = resultado.getString("Tipos de Cama");
+                String tiposCama = resultado.getString("tiposCama");
                 boolean disponivel = resultado.getBoolean("disponivel");
-                System.out.println("Nome: " + nome + " Número: " + num + "Preço: " + preco + "Quantidade de Cama: " + quantidadeCama + "Tipos de cama: " + tiposDeCama + "Disponivel: " + disponivel);
+                System.out.println("\n-------- Autenticação dos Quartos --------\n");
+                System.out.println("Nome: " + nome + "\nNúmero: " + num + "\nPreço: " + preco + "\nQuantidade de Cama: " + quantidadeCama + "\nTipos de cama: " + tiposCama + "\nDisponivel: " + disponivel);
             }
             conndb.close();
         }
         catch (Exception erro) {
-            System.out.println("Erro ao pesquisar o quarto: " + erro);
+            System.out.println("Erro ao autenticar o quarto: " + erro);
         }
     }
 }

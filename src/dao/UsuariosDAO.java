@@ -38,11 +38,11 @@ public class UsuariosDAO {
             Connection conndb = conexao.conectar();
             PreparedStatement updateUsuario = conndb.prepareStatement("UPDATE usuarios SET nome = ?, email = ?, senha = md5(?), cargo_id = ? WHERE id = ?;");
 
-            updateUsuario.setString(1, "");
-            updateUsuario.setString(2, "");
-            updateUsuario.setString(3, "");
+            updateUsuario.setString(1, "a");
+            updateUsuario.setString(2, "a");
+            updateUsuario.setString(3, "a");
             updateUsuario.setInt(4, 2);
-            updateUsuario.setInt(5, 1);
+            updateUsuario.setInt(5, 2);
 
             int rowAffected = updateUsuario.executeUpdate();
             conndb.close();
@@ -71,23 +71,25 @@ public class UsuariosDAO {
         }
     }
 
-    public void pesquisarUsuario() {
+    public boolean autenticarUsuario(Usuario usuario) {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement buscaUsuario = conndb.prepareStatement("SELECT nome, email FROM usuarios WHERE cargo_id = ?");
+            PreparedStatement autenUsuario = conndb.prepareStatement("SELECT nome FROM usuarios WHERE email = ? and senha = md5(?);");
 
-            buscaUsuario.setInt(1, 1);
-            ResultSet resultado = buscaUsuario.executeQuery();
+            autenUsuario.setString(1, usuario.getEmail());
+            autenUsuario.setString(2, usuario.getSenha());
+            ResultSet resultado = autenUsuario.executeQuery();
 
-            while (resultado.next()) {
-                String nome = resultado.getString("nome");
-                String email = resultado.getString("email");
-                System.out.println("Nome: " + nome + " Email: " + email);
-            }
+            boolean acessoAutorizado = resultado.next();
+            String nome = resultado.getString("nome");
+            System.out.println("Olá! Seja bem-vindo," + nome);
+
             conndb.close();
+            return acessoAutorizado;
         }
         catch (Exception erro) {
-            System.out.println("Erro ao pesquisar usuario: " + erro);
+            System.out.println("Erro ao autenticar usuario: " + erro);
+            return false;
         }
     }
 }

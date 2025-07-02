@@ -34,8 +34,8 @@ public class AdicionaisDAO {
             Connection conndb = conexao.conectar();
             PreparedStatement updateAdici = conndb.prepareStatement("UPDATE adicionais SET nome = ?, preco = ? WHERE id = ?;");
 
-            updateAdici.setString(1, "");
-            updateAdici.setDouble(2, 65.00);
+            updateAdici.setString(1, "Sem adicionais");
+            updateAdici.setDouble(2, 0.0);
             updateAdici.setInt(3, 1);
 
             int rowAffected = updateAdici.executeUpdate();
@@ -67,23 +67,24 @@ public class AdicionaisDAO {
         }
     }
 
-    public void pesquisarAdici() {
+    public void autenticarAdici() {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement buscaAdici = conndb.prepareStatement("SELECT nome, preco FROM adicionais WHERE id = ?");
+            PreparedStatement autenticarAdici = conndb.prepareStatement("SELECT nome, preco FROM adicionais WHERE id = ?");
 
-            buscaAdici.setInt(1, 1);
-            ResultSet resultado = buscaAdici.executeQuery();
+            autenticarAdici.setInt(1, 1);
+            ResultSet resultado = autenticarAdici.executeQuery();
 
             while (resultado.next()) {
                 String nome = resultado.getString("nome");
                 double preco = resultado.getDouble("preco");
-                System.out.println("Nome: " + nome + " Preço: " + preco);
+                System.out.println("\n-------- Autenticação de Adicionais --------\n");
+                System.out.println("Nome: " + nome + "\nPreço: " + preco);
             }
             conndb.close();
         }
         catch (Exception erro) {
-            System.out.println("Erro ao pesquisar sobre o adicional: " + erro);
+            System.out.println("Erro ao autenticar o adicional: " + erro);
         }
     }
 }

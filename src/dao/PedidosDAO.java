@@ -13,7 +13,7 @@ public class PedidosDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement novoPedido = conndb.prepareStatement("INSERT INTO pedidos (funcionario_id, cliente_id, pagamento) VALUES (?, ?, ?);");
+            PreparedStatement novoPedido = conndb.prepareStatement("INSERT INTO pedidos (usuario_id, cliente_id, pagamento) VALUES (?, ?, ?);");
 
             novoPedido.setInt(1, 1);
             novoPedido.setInt(2, 1);
@@ -34,11 +34,11 @@ public class PedidosDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement updatePedido = conndb.prepareStatement("UPDATE pedidos SET funcionario_id = ?, cliente_id = ?, pagamento = ? WHERE id = ?;");
+            PreparedStatement updatePedido = conndb.prepareStatement("UPDATE pedidos SET usuario_id = ?, cliente_id = ?, pagamento = ? WHERE id = ?;");
 
             updatePedido.setInt(1, 1);
             updatePedido.setInt(2, 1);
-            updatePedido.setString(3, "");
+            updatePedido.setString(3, "Cartão de Débito");
             updatePedido.setInt(4, 1);
 
             int rowAffected = updatePedido.executeUpdate();
@@ -70,24 +70,25 @@ public class PedidosDAO {
         }
     }
 
-    public void pesquisarPedido() {
+    public void autenticarPedido() {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement buscaPedidos = conndb.prepareStatement("SELECT funcionario_id, cliente_id, pagamento FROM pedidos WHERE id = ?");
+            PreparedStatement buscaPedidos = conndb.prepareStatement("SELECT usuario_id, cliente_id, pagamento FROM pedidos WHERE id = ?");
 
             buscaPedidos.setInt(1, 1);
             ResultSet resultado = buscaPedidos.executeQuery();
 
             while (resultado.next()) {
-                int funcionarioId = resultado.getInt("funcionario_id");
+                int usuarioId = resultado.getInt("usuario_id");
                 int clienteId = resultado.getInt("cliente_id");
                 String pagamento = resultado.getString("pagamento");
-                System.out.println("Id do funcionário: " + funcionarioId + "Id do cliente: " + clienteId + "Pagamento: " + pagamento);
+                System.out.println("\n-------- Autenticação dos Pedidos --------\n");
+                System.out.println("Id do usuario: " + usuarioId + "\nId do cliente: " + clienteId + "\nPagamento: " + pagamento);
             }
             conndb.close();
         }
         catch (Exception erro) {
-            System.out.println("Erro ao pesquisar usuario: " + erro);
+            System.out.println("Erro ao autenticar usuario: " + erro);
         }
     }
 }

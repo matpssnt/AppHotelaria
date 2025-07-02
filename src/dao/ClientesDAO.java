@@ -37,9 +37,9 @@ public class ClientesDAO {
             PreparedStatement updateCliente = conndb.prepareStatement("UPDATE clientes SET login_id = ?, nome = ?, cpf = ?, telefone = ? WHERE id = ?;");
 
             updateCliente.setInt(1, 1);
-            updateCliente.setString(2, "");
-            updateCliente.setString(3, "");
-            updateCliente.setString(4, "");
+            updateCliente.setString(2, "Ma");
+            updateCliente.setString(3, "12345678911");
+            updateCliente.setString(4, "(10)12345-6789");
             updateCliente.setInt(5, 1);
 
             int rowAffected = updateCliente.executeUpdate();
@@ -71,24 +71,25 @@ public class ClientesDAO {
         }
     }
 
-    public void pesquisarCliente() {
+    public void autenticarCliente() {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement buscaCliente = conndb.prepareStatement("SELECT nome, cpf, telefone FROM clientes WHERE login_id = ?");
+            PreparedStatement autenticarCliente = conndb.prepareStatement("SELECT nome, cpf, telefone FROM clientes WHERE login_id = ?");
 
-            buscaCliente.setInt(1, 1);
-            ResultSet resultado = buscaCliente.executeQuery();
+            autenticarCliente.setInt(1, 1);
+            ResultSet resultado = autenticarCliente.executeQuery();
 
             while (resultado.next()) {
                 String nome = resultado.getString("nome");
                 String email = resultado.getString("cpf");
                 String telefone = resultado.getString("telefone");
-                System.out.println("Nome: " + nome + " CPF: " + email + "Telefone: " + telefone);
+                System.out.println("\n-------- Autenticação de Clientes --------\n");
+                System.out.println("Nome: " + nome + "\nCPF: " + email + "\nTelefone: " + telefone);
             }
             conndb.close();
         }
         catch (Exception erro) {
-            System.out.println("Erro ao pesquisar cliente: " + erro);
+            System.out.println("Erro ao autenticar cliente: " + erro);
         }
     }
 }

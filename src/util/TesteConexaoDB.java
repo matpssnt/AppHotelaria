@@ -1,6 +1,8 @@
 package util;
 
+import controller.UsuariosController;
 import dao.*;
+import model.Usuario;
 
 import java.sql.Connection;
 
@@ -8,32 +10,18 @@ public class TesteConexaoDB {
     public static void main(String[] args) {
 
         Conexao conexao = new Conexao();
+
+        //Usuario usuario = new Usuario("Mateus", "mateus@gmail.com", "1234", 1);
+        UsuariosController usuariosController = new UsuariosController();
+
         Connection condb = conexao.conectar();
 
         if (condb != null) {
             System.out.println("Conexão estabelecida com sucesso!");
 
             try {
-                UsuariosDAO usuariosDAO = new UsuariosDAO();
-                usuariosDAO.inserirUsuario();
-                System.out.println("Usuario inserido com sucesso!");
-
-                ClientesDAO clientesDAO = new ClientesDAO();
-                clientesDAO.inserirCliente();
-                System.out.println("Cliente inserido com sucesso!");
-
-                RoomsDAO roomsDAO = new RoomsDAO();
-                roomsDAO.inserirQuarto();
-                System.out.println("Quarto inserido com sucesso!");
-
-                AdicionaisDAO adicionaisDAO = new AdicionaisDAO();
-                adicionaisDAO.inserirAdici();
-                System.out.println("Adicional inserido com sucesso!");
-
-                RolesDAO rolesDAO = new RolesDAO();
-                rolesDAO.inserirCargo();
-                System.out.println("Cargo inserido com sucesso!");
-
+                //Testando a autenticação de um usuário
+                usuariosController.verificarCredenciais("anarocha@gmail.com", "123");
 
                 condb.close();
                 System.out.println("Conexão encerrada!");
