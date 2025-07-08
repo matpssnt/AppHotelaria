@@ -10,17 +10,17 @@ import java.sql.ResultSet;
 public class RoomsDAO {
     private Conexao conexao = new Conexao();
 
-    public boolean inserirQuarto() {
+    public boolean inserirQuarto(Rooms room) {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement novoQuarto = conndb.prepareStatement("INSERT INTO quartos (nome, num, preco, quantidadeCama, tiposCama, disponivel) VALUES (?, ?, ?, ?, ?, ?);");
-            novoQuarto.setString(1, "Quarto Casal");
-            novoQuarto.setInt(2, 123);
-            novoQuarto.setDouble(3, 250.00);
-            novoQuarto.setInt(4, 2);
-            novoQuarto.setString(5, "");
-            novoQuarto.setBoolean(6, true);
+            PreparedStatement novoQuarto = conndb.prepareStatement("INSERT INTO quartos (nome, num, preco, qtd_cama_s, qtd_cama_c, disponivel) VALUES (?, ?, ?, ?, ?, ?);");
+            novoQuarto.setString(1, room.getNome());
+            novoQuarto.setString(2, room.getNumero());
+            novoQuarto.setDouble(3, room.getPreco());
+            novoQuarto.setInt(4, room.getQtd_cama_s());
+            novoQuarto.setInt(5, room.getQtd_cama_c());
+            novoQuarto.setBoolean(6, room.isDisponivel());
 
             int rowAffected = novoQuarto.executeUpdate();
             conndb.close();
@@ -36,13 +36,13 @@ public class RoomsDAO {
 
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement updateRoom = conndb.prepareStatement("UPDATE quartos SET nome = ?, num = ?, preco = ?, quantidadeCama = ?, tiposCama = ?, disponivel = ? WHERE id = ?;");
+            PreparedStatement updateRoom = conndb.prepareStatement("UPDATE quartos SET nome = ?, num = ?, preco = ?, qtd_cama_c = ?, qtd_cama_s = ?, disponivel = ? WHERE id = ?;");
 
             updateRoom.setString(1, "Quarto Solteiro");
-            updateRoom.setInt(2, 321);
+            updateRoom.setString(2, "");
             updateRoom.setDouble(3, 150.00);
             updateRoom.setInt(4, 1);
-            updateRoom.setString(5, "Sim");
+            updateRoom.setInt(5, 0);
             updateRoom.setBoolean(6, false);
             updateRoom.setInt(7, 1);
 
@@ -77,7 +77,7 @@ public class RoomsDAO {
     public void autenticarQuarto() {
         try {
             Connection conndb = conexao.conectar();
-            PreparedStatement autenticarRooms = conndb.prepareStatement("SELECT nome, num, preco, quantidadeCama, tiposCama, disponivel FROM quartos WHERE id = ?");
+            PreparedStatement autenticarRooms = conndb.prepareStatement("SELECT nome, num, preco, qtd_cama_c, qtd_cama_s, disponivel FROM quartos WHERE id = ?");
 
             autenticarRooms.setInt(1, 1);
             ResultSet resultado = autenticarRooms.executeQuery();
@@ -86,11 +86,11 @@ public class RoomsDAO {
                 String nome = resultado.getString("nome");
                 int num = resultado.getInt("num");
                 double preco = resultado.getDouble("preco");
-                int quantidadeCama = resultado.getInt("quantidadeCama");
-                String tiposCama = resultado.getString("tiposCama");
+                int qtd_cama_c = resultado.getInt("qtdCamaCasal:");
+                int qtd_cama_s = resultado.getInt("qtdCamaSolteiro");
                 boolean disponivel = resultado.getBoolean("disponivel");
                 System.out.println("\n-------- Autenticação dos Quartos --------\n");
-                System.out.println("Nome: " + nome + "\nNúmero: " + num + "\nPreço: " + preco + "\nQuantidade de Cama: " + quantidadeCama + "\nTipos de cama: " + tiposCama + "\nDisponivel: " + disponivel);
+                System.out.println("Nome: " + nome + "\nNúmero: " + num + "\nPreço: " + preco + "\nCama de Casal: " + qtd_cama_c + "\nCama de Solteiro: " + qtd_cama_s + "\nDisponivel: " + disponivel);
             }
             conndb.close();
         }

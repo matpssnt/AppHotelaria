@@ -6,12 +6,12 @@ public class Rooms {
     private Double  preco;
     private boolean disponivel;
 
-    public Rooms(String nome, String numero, int qtd_cama_c, int qtd_cama_s, Double preco, boolean disponivel) {
+    public Rooms(String nome, String numero, Double preco, int qtd_cama_s, int qtd_cama_c, boolean disponivel) {
         this.nome = nome;
         this.numero = numero;
-        this.qtd_cama_c = qtd_cama_c;
-        this.qtd_cama_s = qtd_cama_s;
         this.preco = preco;
+        this.qtd_cama_s = qtd_cama_s;
+        this.qtd_cama_c = qtd_cama_c;
         this.disponivel = disponivel;
     }
 

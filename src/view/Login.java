@@ -1,5 +1,6 @@
 package view;
 
+import controller.UsuariosController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -51,8 +52,6 @@ public class Login extends Application {
 
         Image logoHotel = new Image(getClass().getResourceAsStream("/view/resources/img/logoHotel.jpg"));
         Image email = new Image(getClass().getResourceAsStream("/view/resources/img/email-25.png"));
-        Image eye_open = new Image(getClass().getResourceAsStream("/view/resources/img/senha.png"));
-        Image eye_closed = new Image(getClass().getResourceAsStream("/view/resources/img/senha2.png"));
 
 
         btnLogin.setMaxWidth(125);
@@ -67,14 +66,6 @@ public class Login extends Application {
         ImageView iconEmail = new ImageView(email);
         iconEmail.setFitHeight(15);
         iconEmail.setFitWidth(15);
-
-        ImageView iconEyeOpen = new ImageView(eye_open);
-        iconEyeOpen.setFitHeight(15);
-        iconEyeOpen.setFitWidth(15);
-
-        ImageView iconEyeClosed = new ImageView(eye_closed);
-        iconEyeClosed.setFitHeight(15);
-        iconEyeClosed.setFitWidth(15);
 
 
 
@@ -96,7 +87,6 @@ public class Login extends Application {
         campoEmail.setStyle("-fx-background-color: white; -fx-background-radius: 5;");
 
         Label pergunteSenha = new Label();
-        pergunteSenha.setGraphic(iconEyeOpen);
 
         PasswordField campoSenha = new PasswordField();
         campoSenha.setPromptText("Digite sua senha");
@@ -108,31 +98,33 @@ public class Login extends Application {
         campoSenhaTexto.setManaged(false);
 
 
+        campoSenhaTexto.managedProperty().bind(campoSenhaTexto.visibleProperty().not());
+        campoSenhaTexto.visibleProperty().bind(campoSenhaTexto.visibleProperty().not());
+        campoSenhaTexto.textProperty().bindBidirectional(campoSenha.textProperty());
+
+        Image eye_open = new Image(getClass().getResourceAsStream("/view/resources/img/senha.png"));
+        Image eye_closed = new Image(getClass().getResourceAsStream("/view/resources/img/senha2.png"));
+
+        ImageView iconEyeClosed = new ImageView(eye_closed);
+        iconEyeClosed.setFitHeight(15);
+        iconEyeClosed.setFitWidth(15);
+        iconEyeClosed.setCursor(javafx.scene.Cursor.HAND);
+
+        StackPane stackSenha = new StackPane();
+        stackSenha.setMaxWidth(200);
+        stackSenha.setAlignment(Pos.CENTER_RIGHT);
+        stackSenha.getChildren().addAll(campoSenha, campoSenhaTexto, iconEyeClosed);
+
+
         Button btnOlho = new Button();
         btnOlho.setGraphic(iconEyeClosed);
         btnOlho.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-cursor: hand;");
 
 
         btnOlho.setOnAction(evento -> {
-
-            if (senhaVisivel) {
-                campoSenha.setText(campoSenhaTexto.getText());
-                campoSenha.setVisible(true);
-                campoSenha.setManaged(true);
-                campoSenhaTexto.setVisible(false);
-                campoSenhaTexto.setManaged(false);
-                btnOlho.setGraphic(iconEyeOpen);
-                senhaVisivel = false;
-
-            } else {
-                campoSenhaTexto.setText(campoSenha.getText());
-                campoSenhaTexto.setVisible(true);
-                campoSenhaTexto.setManaged(true);
-                campoSenha.setVisible(false);
-                campoSenha.setManaged(false);
-                btnOlho.setGraphic(iconEyeClosed);
-                senhaVisivel = true;
-            }
+            boolean senhaVisivel = !campoSenha.isVisible();
+            campoSenha.setVisible(senhaVisivel);
+            iconEyeClosed.setImage(senhaVisivel ? eye_closed : eye_open);
         });
 
 
@@ -140,6 +132,22 @@ public class Login extends Application {
         String campoStyle = "-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 5 30 5 5;";
         campoSenha.setStyle(campoStyle);
         campoSenhaTexto.setStyle(campoStyle);
+
+
+        btnLogin.setOnAction(evento -> {
+            String usuario = campoEmail.getText();
+            String senha = campoSenha.isVisible() ? campoSenha.getText() : campoSenhaTexto.getText();
+
+            UsuariosController usuariosController = new UsuariosController();
+            boolean loginSucesso = usuariosController.verificarCredenciais(usuario, senha);
+            if (loginSucesso) {
+                System.out.println("Login efetuado com sucesso!");
+            }
+            else {
+                System.out.println("Login inválido!");
+            }
+
+        });
 
 
         GridPane formGrid = new GridPane();

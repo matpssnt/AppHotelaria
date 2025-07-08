@@ -82,7 +82,7 @@ public class UsuariosDAO {
 
             boolean acessoAutorizado = resultado.next();
             String nome = resultado.getString("nome");
-            System.out.println("Olá! Seja bem-vindo," + nome);
+            System.out.println("Olá! Seja bem-vindo, " + nome);
 
             conndb.close();
             return acessoAutorizado;

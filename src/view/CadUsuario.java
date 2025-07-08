@@ -77,6 +77,8 @@ public class CadUsuario extends Application {
         boxSetor.setPromptText("Selecione: ");
 
 
+
+
         GridPane formGrid = new GridPane();
 
         formGrid.add(buttons, 1 ,4);

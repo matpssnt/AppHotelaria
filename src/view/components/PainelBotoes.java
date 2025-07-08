@@ -8,13 +8,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class PainelBotoes extends HBox {
-    Image iconBtnCad = new Image(getClass().getResourceAsStream("/view/resources/img/add.png"));
-    Image iconBtnExc = new Image(getClass().getResourceAsStream("/view/resources/img/remove.png"));
-    Image iconBtnAtua = new Image(getClass().getResourceAsStream("/view/resources/img/update.png"));
 
     public Button btnCad = new Button("Cadastro");
     public Button btnExc = new Button("Excluir");
     public Button btnAtua = new Button("Atualizar");
+
+    Image iconBtnCad = new Image(getClass().getResourceAsStream("/view/resources/img/add.png"));
+    Image iconBtnExc = new Image(getClass().getResourceAsStream("/view/resources/img/remove.png"));
+    Image iconBtnAtua = new Image(getClass().getResourceAsStream("/view/resources/img/update.png"));
 
     public PainelBotoes() {
         ImageView viewIconCad = new ImageView(iconBtnCad);
